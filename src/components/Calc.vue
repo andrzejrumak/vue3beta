@@ -3,28 +3,36 @@
     <div class="card">
       <h3>Vue 3 Calculator</h3>
       <p>first number</p>
-      <input type="text" v-model="calc.n1" name="n1" />
+      <input type="text" v-model="n1" name="n1" />
       <p>second number</p>
-      <input type="text" v-model="calc.n2" name="n1" />
-      <h5>result of the multiplication - {{ calc.multi }}</h5>
-      <h5>result of the adding - {{ calc.add }}</h5>
+      <input type="text" v-model="n2" name="n1" />
+      <h5>result of the multiplication - {{ multi }}</h5>
+      <h5>result of the adding - {{ add }}</h5>
     </div>
   </div>
 </template>
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, toRefs } from "vue";
+function useCalc() {
+  let calc = reactive({
+    n1: 0,
+    n2: 0,
+    multi: computed(() => parseInt(calc.n1) * parseInt(calc.n2)),
+    add: computed(() => parseInt(calc.n1) + parseInt(calc.n2)),
+  });
+  return toRefs(calc);
+}
+
 export default {
   name: "Calc",
   setup() {
-    let calc = reactive({
-      n1: 0,
-      n2: 0,
-      multi: computed(() => parseInt(calc.n1) * parseInt(calc.n2)),
-      add: computed(() => parseInt(calc.n1) + parseInt(calc.n2)),
-    });
+    let { n1, n2, multi, add } = useCalc();
 
     return {
-      calc,
+      n1,
+      n2,
+      multi,
+      add,
     };
   },
 };
